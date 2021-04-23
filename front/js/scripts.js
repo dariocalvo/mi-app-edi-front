@@ -77,7 +77,4 @@
 		alert ("El nombre ingresado contiene " + vocales + " vocales y " + consonantes + " consonantes.");
 	}
 
-	function Spinner(){
-		document.getElementById('spinner').style.visibility= "visible";
-		document.getElementById('boton').style.visibility= "hidden";
-	}
+	
