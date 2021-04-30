@@ -9,7 +9,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- scripts -->
-		<script src="js/scripts.js"></script>
+		<script src="js/Login.js"></script>
 		<!-- Estilos -->
 		<link rel="stylesheet" href="css/Estilos.css">
 		<!-- Latest compiled and minified CSS -->
@@ -25,7 +25,7 @@
 			
 			<div class= "row" >
 				<div class="col-md-4 col-sm-6 col-8">	
-					<form  action="../back/Validar.php" method="post" onsubmit="return verificar()"> 
+					<form  action="" method="post"> 
 						<h2>Ingreso al sistema</h2><br>
 						<fieldset>
 							<!--<legend>Usuario:</legend>-->
@@ -36,8 +36,9 @@
 							<input id = "campo2" type="password" name="clave" tabindex ="2" placeholder="Contraseña" onFocus= "Vaciar(this)"	onkeydown= "pulsar(event)">
 						</fieldset>
 							<br>
-							<input id = "boton" class = "btn btn-primary" name = "Enviar" type="submit" value="Ingresar" >
+							<input id = "boton" class = "btn btn-primary" name = "Enviar" type="button" onclick= "verificar()" value="Ingresar" >
 							<div id = "spinner" class ="spinner-border text-success" ></div>
+							<div id = "bienvenida"></div>
 					</form>
 				</div>
 			</div>
