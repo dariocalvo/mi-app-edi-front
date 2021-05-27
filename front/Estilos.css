@@ -5,27 +5,35 @@ html, body{
     flex-direction: column;
 }
 
-form{
-    padding: 10px;
+#formulario{
+    padding: 2px;
     border-color: rgb(97, 108, 170);
     border-style: solid; 
     border-width: medium;
     border-radius: 10px;
-    /*margin: 10px auto;*/
+    margin: 1px auto;
     background-color: #b9c1c2;
     opacity: 90%; 
-    font-size:16px; 
+    font-size:14px; 
     font-family:tahoma;
     font-weight:bold;
     text-align: center;
 }
 
-form h2{
+#formulario h2{
     color:rgb(52, 87, 202);
     text-transform: uppercase;
     font-weight: bold;
-    
-}    
+}
+
+#formulario p{
+    color:rgb(16, 16, 65);
+    font-size: 12px;
+}
+
+#formulario span{
+    font-size: 11px;
+}
 
 #container{
     height: 100%;
@@ -35,7 +43,20 @@ form h2{
   
 }
 
+#imagen{
+    background-color: rgb(169, 181, 184);
+    border-radius: 5px;
+}
+
+#img_previa{
+    border-radius: 50%;
+    width: 100px;   
+    height: 100px;  
+    object-fit: cover;
+}
+
 .row{
    justify-content: center;
    align-items: center;
 }
+

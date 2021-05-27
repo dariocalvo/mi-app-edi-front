@@ -9,9 +9,10 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- scripts -->
-		<script src="js/Login.js"></script>
+		<script src="Login.js"></script>
+		<script src="../js/funciones_generales.js"></script>
 		<!-- Estilos -->
-		<link rel="stylesheet" href="css/Estilos.css">
+		<link rel="stylesheet" href="../css/Estilos.css">
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 		<!-- jQuery library -->
@@ -22,24 +23,17 @@
 		
 	<body >
 		<section id="container">
-			
-			<div class= "row" >
-				<div class="col-md-4 col-sm-6 col-8">	
-					<form  action="" method="post"> 
-						<h2>Ingreso al sistema</h2><br>
-						<fieldset>
-							<!--<legend>Usuario:</legend>-->
-							<input id= "campo1" type="text" name="nombre" tabindex ="1" placeholder="Usuario" onFocus= "Vaciar(this)" onkeydown= "pulsar(event)" >
-						</fieldset><br>
-						<fieldset>
-							<!--<legend>Contraseña</legend>-->
-							<input id = "campo2" type="password" name="clave" tabindex ="2" placeholder="Contraseña" onFocus= "Vaciar(this)"	onkeydown= "pulsar(event)">
-						</fieldset>
-							<br>
-							<input id = "boton" class = "btn btn-primary" name = "Enviar" type="button" onclick= "verificar()" value="Ingresar" >
-							<div id = "spinner" class ="spinner-border text-success" ></div>
-							<div id = "bienvenida"></div>
-					</form>
+			<div class= "row" id= "formulario">
+				<div class="col-md-10">
+					<h2 >Ingreso al sistema</h2><hr>	
+					<input class= "form-control" id= "usuario" type="text" name="nombre" tabindex ="1" placeholder="Usuario" onfocus="Vaciar(this)"><br>
+					<input class= "form-control" id = "pass" type="password" name="clave" tabindex ="2" placeholder="Contraseña" onfocus="Vaciar(this)"><br>
+					<input id = "boton" class = "btn btn-primary" type="button" value="Ingresar" tabindex ="3">
+					<div id = "spinner" class ="spinner-border text-success" ></div> 
+					<div id = "bienvenida"></div>
+					<div id = "enlace"><hr>
+						<p class = "link">No estas registrado? <a href="../Registro/Registro.html" >Registrate</a>!</p>
+					</div>
 				</div>
 			</div>
 		</section>
