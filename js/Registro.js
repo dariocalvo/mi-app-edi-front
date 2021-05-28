@@ -87,7 +87,7 @@
 
     
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-			EnviarAlServidor("/EDI_3/back/", Respuesta);
+			EnviarAlServidor("https://app-calvo-back.herokuapp.com/", Respuesta);
 			alert ("Este mensaje se escribió despues de mandar la peticion asincrónica");
 	}
 
