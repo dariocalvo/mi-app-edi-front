@@ -26,7 +26,8 @@
 	}
 
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-			EnviarAlServidor("https://app-calvo-back.herokuapp.com/", Respuesta);	
+			var servidor = "https://app-calvo-back.herokuapp.com/";
+			EnviarAlServidor(servidor, Respuesta);	
 			alert ("Este mensaje se escribió despues de mandar la peticion asincrónica");
 	}
 
@@ -35,14 +36,13 @@
 		var xmlhttp = new XMLHttpRequest();
 		// armo el mensaje a enviar al servidor:
 		// paso parametros del envío: metodo por el cual mando la peticion, que servidor donde dirige el llamado, y true si lo quiero asincrónico
-		xmlhttp.open("POST", servidor, true);
+		xmlhttp.open("GET", servidor, true);
 		// asigno al evento que cuando esta reciba un estado haga la funcion...
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
 					Respuesta(xmlhttp.responseText);// me muestre la respuesta del servidor si todo fue OK
 					Control('spinner').style.display= "none";
-					Control('bienvenida').innerHTML= "Hola, " + Control("usuario").value +", has ingresado al sistema dado que php todavia no valida usuarios porque no se han creado bases de datos.";
 				}else{
 					alert("Ocurrió un error.");
 				}
