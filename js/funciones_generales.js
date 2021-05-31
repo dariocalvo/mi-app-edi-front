@@ -4,14 +4,6 @@
 		return document.getElementById(idControl);
 	}
 	
-    function Comparar(texto1, texto2){//verificar igualdad de textos 
-		if (texto1 == texto2){
-			return true;
-		} else {
-			return false;
-		}	
-	}
-
     function ValidarExpreg(cadena, regla){// validar textos con expresiones regulares
         if (regla.test(cadena)){
 		    return true;

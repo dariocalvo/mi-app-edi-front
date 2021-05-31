@@ -37,7 +37,7 @@
 						break;
 					case "comprobación":
 						var contraseña = Control('contraseña').value;
-						var regla = new RegExp("[" + contraseña + "]$");
+						var regla = new RegExp("^" + contraseña + "$");
 						var msjError = 'la contraseña y su comprobación no coinciden.'; 
 						break;
 					case "email":
