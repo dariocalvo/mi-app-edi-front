@@ -39,51 +39,20 @@
 
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
 			var servidor = "https://app-calvo-back.herokuapp.com/";
-			EnviarGet(servidor);	
-	}
-/*
-	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
-		// Crear un objeto xml
-		var xmlhttp = new XMLHttpRequest();
-		
-		xmlhttp.open("GET", servidor, true);
-		
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == XMLHttpRequest.DONE){
-				if(xmlhttp.status == 200){
-					Respuesta(xmlhttp.responseText);// me muestre la respuesta del servidor si todo fue OK
-					Control('spinner').style.display= "none";
-				}else{
-					alert("Ocurrió un error.");
-				}
-			}
-		}
-		// Creo un objeto con los datos ingresados en el formulario
-		var usuario = {nombre: Control("usuario").value, pass: Control("contraseña").value};
-
-		// envío el mensaje al servidor con los datos
-		xmlhttp.send(usuario);
+			EnviarGet(servidor, Respuesta);	
 	}
 
-	function Respuesta(mensaje){
-		alert ("El servidor responde: " + mensaje);
-	}
-*/
-
-
-
-function EnviarGet(servidor) {
+function EnviarGet(servidor, Respuesta) {
 
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.open("GET", servidor, true);
 	//xmlhttp.open("POST", servidor, true);
-	//xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.onreadystatechange = function () {
+	xmlhttp.onreadystatechange = function () {
         
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
             if (xmlhttp.status == 200) {
-                funcionARealizar(xmlhttp.responseText);
+				Respuesta(xmlhttp.responseText)
             }
             else {
                 alert("ocurrio un error");
@@ -96,4 +65,6 @@ function EnviarGet(servidor) {
     xmlhttp.send(usuario);
 }
 
-
+function Respuesta(mensaje){
+	alert ("El servidor responde: " + mensaje);
+}

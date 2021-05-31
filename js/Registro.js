@@ -113,13 +113,12 @@
 
 	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
 		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("POST", servidor, true);
+		xmlhttp.open("GET", servidor, true);
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
 					Respuesta(xmlhttp.responseText);// me muestre la respuesta del servidor si todo fue OK
 					Control('spinner').style.display= "none";
-					Control('bienvenida').innerHTML= "Hola, " + Control("usuario").value +", has ingresado al sistema dado que php todavia no valida usuarios porque no se han creado bases de datos.";
 				}else{
 					alert("Ocurrió un error.");
 				}
