@@ -1,46 +1,77 @@
 		
 	function Alcargar(){//Hacer foco al cagar la pagina en el primer campo a rellenar
 		Control('spinner').style.display= "none";
-		Control('usuario').focus();
+		Control('nombre').focus();
 		Control('default').style.display = 'none';
-		Control('default').addEventListener('click', imagenDefault);
-		Control('enviar').addEventListener('click', verificar);
-		Control('pass').addEventListener('change', comprobarPass);
-		requisitoPass();
+		escucharEventos();
 	}
 
-    function verificar() {//verificar datos correctos antes de enviar formulario (campos vacios y clave con digitos requeridos)
-		var nombre = Control('usuario').value;
-		var pass = Control('pass').value;
-        var pass2 = Control('pass2').value;
-		var msj = "";
-        if (Vacio(nombre)) msj = msj + "No se ha ingresado nombre de usuario. ";
-		if (Vacio(pass)) msj = msj + "No se ingresó contraseña. ";
-        if (Vacio(pass2)) msj = msj + "No se ingresó la confirmación de contraseña. ";
-        if (!Comparar(pass, pass2)) msj = msj + "Las contraseñas no son iguales. ";
-		if (msj.length > 0){
-			alert (msj);
-			if (msj.startsWith("No se ingresó") || msj.startsWith("Las")){
-				Control('pass').focus();
-			}else{
-				Control('usuario').focus();
-			}
-		}else{
-            var expreg = /^(?=(?:.*\d){1})(?=.*[A-Z])(.)(?:.*)$/;
-		    if (ValidarExpreg(pass, expreg)){
-				Control('spinner').style.display= "inline-grid";
-				Control('boton').style.display= "none";
-				Enviar();
-			}else{
-				alert ("La contraseña no cumple con los requisitos, debe contener al menos un número y una mayúscula.");
-				Control('pass').focus();
-			}
-		}
+	function escucharEventos(){
+		Control('default').addEventListener('click', imagenDefault);
+		Control('enviar').addEventListener('click', verificar);
+		Control('nombre').addEventListener('focus', function(event){event.target.value = "";});	  
+		Control('usuario').addEventListener('focus', function(event){event.target.value = "";});	  
+		Control('email').addEventListener('focus', function(event){event.target.value = "";});
+		Control('contraseña').addEventListener('focus', function(event){
+			event.target.value = "";
+			Control('msjpas').style.color = "grey";
+			Control('msjpas').innerHTML="Debe contener al menos una mayúscula y un número.";
+		});
+		Control('contraseña').addEventListener('blur', (event) => {comprobarcontraseña();});
+		Control('comprobación').addEventListener('focus', function(event){event.target.value = "";});
+		Control('contraseña').addEventListener('change', comprobarcontraseña);
 	}
 	
-	function comprobarPass(){
+	function verificar() {//verificar datos correctos antes de enviar formulario (campos vacios y clave con digitos requeridos)
+		var i = 1;
+		var elemento = "";
+		var error=false;
+			while (i > 0){
+				error=false;
+				elemento = document.querySelector('[tabindex = "'+i+'"]').id;
+				i++;
+				switch (elemento){
+					case "contraseña":
+						var regla = /^(?=(?:.*\d){1})(?=.*[A-Z])(.)(?:.*)$/;
+						var msjError = 'no cumple con los requisitos de seguridad.'; 
+						break;
+					case "comprobación":
+						var contraseña = Control('contraseña').value;
+						var regla = new RegExp("[" + contraseña + "]$");
+						var msjError = 'la contraseña y su comprobación no coinciden.'; 
+						break;
+					case "email":
+						var regla = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+						var msjError = 'el formato no corresponde a una dirección de correo electrónico.';
+						break;
+					case "avatar":
+						var regla = /^.*$/;	
+						break;
+					default:
+						var regla = /^(?!\s).+$/;
+						var msjError = 'el contenido del campo no puede estar vacío o comenzar con espacio.';
+						break;	
+				}
+				if (!ValidarExpreg(Control(elemento).value, regla)){
+					alert('Error en '+elemento+', '+msjError);
+					error=true;
+					Control(elemento).focus();
+					break;
+				}else{
+					error=false;
+				}
+				if (elemento == 'enviar') {i=-1;}
+			}
+		if (!error){
+			Control('spinner').style.display= "inline-grid";
+			Control('enviar').style.display= "none";
+			Enviar();
+		}	
+	}	
+
+	function comprobarcontraseña(){
 		var expreg = /^(?=(?:.*\d){1})(?=.*[A-Z])(.)(?:.*)$/;
-		var pass = Control('pass').value;
+		var pass = Control('contraseña').value;
 		if (ValidarExpreg(pass, expreg)){
 			Control('msjpas').style.color = "green";
 			Control('msjpas').innerHTML="La contraseña esta OK.";	
@@ -53,51 +84,36 @@
 			}	
 		}
 	}
-
-    function requisitoPass(){
-		Control('pass').addEventListener('focus', (event) => {
-			Control('msjpas').style.color = "grey";
-			Control('msjpas').innerHTML="Debe contener al menos una mayúscula y un número.";
-		});
-		Control('pass').addEventListener('blur', (event) => {
-			comprobarPass();
-		});
-	}
-
-
+    
     function imagenPrevia() { //Genera una imágen previa del archivo a subir       
         var reader = new FileReader();         
         reader.readAsDataURL(Control('avatar').files[0]);         
         reader.onload = function (e) {       
             Control('img_previa').src = e.target.result;   
         }  
-		Control('avatar').className = 'col-md-9'; 
+		Control('avatar').className = 'col-md-12-9'; 
 		Control('default').style.display = 'inline';
-		Control('boton').focus();
+		Control('enviar').focus();
 	}  
 	
-	function imagenDefault() { //Genera una imágen previa del archivo a subir    
-			Control('img_previa').src = "img/user.png";
-			Control('avatar').className = 'col-md-11'; 
-			Control('avatar').value='';
-			Control('default').style.display = 'none';
-			Control('boton').focus();
+	function imagenDefault() { //Coloca una imágen por defecto si no se elije ninguna    
+		Control('img_previa').src = "img/user.png";
+		Control('avatar').className = 'col-md-12-9'; 
+		Control('avatar').value='';
+		Control('default').style.display = 'none';
+		Control('enviar').focus();
 	}
 
 
     
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-			EnviarAlServidor("https://app-calvo-back.herokuapp.com/", Respuesta);
-			alert ("Este mensaje se escribió despues de mandar la peticion asincrónica");
+		var servidor = "https://app-calvo-back.herokuapp.com/";	
+		EnviarAlServidor(servidor, Respuesta);
 	}
 
 	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
-		// Crear un objeto xml
 		var xmlhttp = new XMLHttpRequest();
-		// armo el mensaje a enviar al servidor:
-		// paso parametros del envío: metodo por el cual mando la peticion, que servidor donde dirige el llamado, y true si lo quiero asincrónico
 		xmlhttp.open("POST", servidor, true);
-		// asigno al evento que cuando esta reciba un estado haga la funcion...
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
@@ -109,10 +125,8 @@
 				}
 			}
 		}
-		// Creo un objeto con los datos ingresados en el formulario
-		var usuario = {nombre: Control("usuario").value, pass: Control("pass").value};
+		var usuario = {nombre: Control("usuario").value, contraseña: Control("contraseña").value};
 
-		// envío el mensaje al servidor con los datos
 		xmlhttp.send(usuario);
 	}
 

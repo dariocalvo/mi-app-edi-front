@@ -2,42 +2,52 @@
 	function Alcargar(){//Hacer foco al cagar la pagina en el primer campo a rellenar
 		Control('spinner').style.display= "none";
 		Control('usuario').focus();
-		Control('boton').addEventListener('click', verificar);
+		escucharEventos();
 	}
-		
+	
+	function escucharEventos(){
+		Control('enviar').addEventListener('click', verificar);
+		Control('usuario').addEventListener('focus', function(event){event.target.value = "";});	  
+		Control('contraseña').addEventListener('focus', function(event){event.target.value = "";});
+	}
+	
 	function verificar() {//verificar datos correctos antes de enviar formulario (campos vacios y clave con digitos requeridos)
-		var nombre = Control('usuario').value;
-		var pass = Control('pass').value;
-		var msj = "";
-		if (Vacio(nombre)) msj = msj + "No se ha ingresado nombre de usuario. ";
-		if (Vacio(pass)) msj = msj + "No se ingresó contraseña. ";
-		if (msj.length > 0){
-			alert (msj);
-			if (msj.startsWith("No se ingresó contraseña")){
-				Control('pass').focus();
-			}else{
-				Control('usuario').focus();
+		var i = 1;
+		var regla = /^(?!\s).+$/;
+		var elemento = "";
+		var error=false;
+			while (i > 0){
+				error=false;
+				elemento = document.querySelector('[tabindex = "'+i+'"]').id;
+				i++;
+				if (!ValidarExpreg(Control(elemento).value, regla)){
+					alert ('Error en el campo '+elemento+', no puede estar vacío ni comenzar con espacios.');
+					error=true;
+					Control(elemento).focus();
+					break;
+				}else{
+					error=false;
+				}
+				if (elemento == 'enviar') {i=-1;}
 			}
-		}else{
-				Control('spinner').style.display= "inline-grid";
-				Control('boton').style.display= "none";
-				Enviar();
-		}
+		if (!error){
+			Control('spinner').style.display= "inline-grid";
+			Control('enviar').style.display= "none";
+			Enviar();
+		}	
 	}
 
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
 			var servidor = "https://app-calvo-back.herokuapp.com/";
-			EnviarAlServidor(servidor, Respuesta);	
-			alert ("Este mensaje se escribió despues de mandar la peticion asincrónica");
+			EnviarGet(servidor);	
 	}
-
+/*
 	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
 		// Crear un objeto xml
 		var xmlhttp = new XMLHttpRequest();
-		// armo el mensaje a enviar al servidor:
-		// paso parametros del envío: metodo por el cual mando la peticion, que servidor donde dirige el llamado, y true si lo quiero asincrónico
+		
 		xmlhttp.open("GET", servidor, true);
-		// asigno al evento que cuando esta reciba un estado haga la funcion...
+		
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
@@ -49,7 +59,7 @@
 			}
 		}
 		// Creo un objeto con los datos ingresados en el formulario
-		var usuario = {nombre: Control("usuario").value, pass: Control("pass").value};
+		var usuario = {nombre: Control("usuario").value, pass: Control("contraseña").value};
 
 		// envío el mensaje al servidor con los datos
 		xmlhttp.send(usuario);
@@ -58,3 +68,32 @@
 	function Respuesta(mensaje){
 		alert ("El servidor responde: " + mensaje);
 	}
+*/
+
+
+
+function EnviarGet(servidor) {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", servidor, true);
+	//xmlhttp.open("POST", servidor, true);
+	//xmlhttp.setRequestHeader('Content-Type', 'application/json');
+    xmlhttp.onreadystatechange = function () {
+        
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+            if (xmlhttp.status == 200) {
+                funcionARealizar(xmlhttp.responseText);
+            }
+            else {
+                alert("ocurrio un error");
+            }
+        }
+    }
+	
+	var usuario = {nombre: Control("usuario").value, pass: Control("contraseña").value};
+	//xmlhttp.setRequestHeader("contant-Disposition", 'attachment; filename="' +  nombreArchivo + '"');
+    xmlhttp.send(usuario);
+}
+
+
