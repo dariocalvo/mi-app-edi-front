@@ -18,6 +18,7 @@ html, body{
     font-family:tahoma;
     font-weight:bold;
     text-align: center;
+    animation: fadein 1s;
 }
 
 #formulario h2{
@@ -25,6 +26,18 @@ html, body{
     text-transform: uppercase;
     font-weight: bold;
 }
+
+  @keyframes fadein{
+         
+    0% { 
+        opacity: 20%; 
+        transform: scale(1%); 
+    }
+    100%  { 
+        opacity: 100%; 
+        transform: scale(100%);
+    }
+  }
 
 #container{
     height: 100%;
@@ -36,6 +49,16 @@ html, body{
 #imagen{
     background-color: rgb(169, 181, 184);
     border-radius: 5px;
+}
+#imagen:hover{
+    transform: scale(105%)
+}
+
+#enviar:hover{
+    transform: scale(115%);
+}
+#default:hover{
+    color: red;
 }
 
 #img_previa{

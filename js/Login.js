@@ -53,6 +53,7 @@ function EnviarGet(servidor, Respuesta) {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
             if (xmlhttp.status == 200) {
 				Respuesta(xmlhttp.responseText)
+				Control('spinner').style.display= "none";
             }
             else {
                 alert("ocurrio un error");
