@@ -1,8 +1,6 @@
+
 html, body{
     height:100%;
-    /*overflow: hidden;*/
-    display: block;
-    /*flex-direction: column;*/
 }
 
 #formulario{
@@ -23,9 +21,14 @@ html, body{
 
 #formulario h2{
     color:rgb(52, 87, 202);
-    text-transform: uppercase;
     font-weight: bold;
+    animation: fadein 2s;
 }
+
+#formulario p{
+    font-size: 11px;
+}
+
 
   @keyframes fadein{
          

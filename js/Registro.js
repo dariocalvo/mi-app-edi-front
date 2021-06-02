@@ -14,7 +14,7 @@
 		Control('email').addEventListener('focus', function(event){event.target.value = "";});
 		Control('contraseña').addEventListener('focus', function(event){
 			event.target.value = "";
-			Control('msjpas').style.color = "grey";
+			Control('msjpas').style.color = "#495E67";
 			Control('msjpas').innerHTML="Debe contener al menos una mayúscula y un número.";
 		});
 		Control('contraseña').addEventListener('blur', (event) => {comprobarcontraseña();});
@@ -108,12 +108,19 @@
     
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
 		var servidor = "https://app-calvo-back.herokuapp.com/";	
-		EnviarAlServidor(servidor, Respuesta);
+		EnviarAlServidor(servidor, RespuestaRecibida);
 	}
 
 	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
 		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET", servidor, true);
+		var datos= new FormData();
+		datos.append("nombre", Control("nombre").value);
+		datos.append("email", Control("email").value);
+		datos.append("usuario", Control("usuario").value);
+		datos.append("contraseña", Control("contraseña").value);
+		datos.append("avatar", Control("avatar").files[0]);
+
+		xmlhttp.open("POST", servidor, true);
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
@@ -124,11 +131,10 @@
 				}
 			}
 		}
-		var usuario = {nombre: Control("usuario").value, contraseña: Control("contraseña").value};
-
-		xmlhttp.send(usuario);
+		xmlhttp.setRequestHeader('enctype', 'multipart/form-data');
+		xmlhttp.send(datos);
 	}
 
-	function Respuesta(mensaje){
+	function RespuestaRecibida(mensaje){
 		alert ("El servidor responde: " + mensaje);
 	}

@@ -39,17 +39,17 @@
 
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
 			var servidor = "https://app-calvo-back.herokuapp.com/";
-			EnviarGet(servidor, Respuesta);	
+			EnviarPost(servidor, Respuesta);	
 	}
 
-function EnviarGet(servidor, Respuesta) {
-
+function EnviarPost(servidor, Respuesta) {
     var xmlhttp = new XMLHttpRequest();
+	var datos= new FormData();
+	datos.append("usuario", Control("usuario").value);
+	datos.append("contraseña", Control("contraseña").value);
 
-    xmlhttp.open("GET", servidor, true);
-	//xmlhttp.open("POST", servidor, true);
+	xmlhttp.open("POST", servidor, true);
 	xmlhttp.onreadystatechange = function () {
-        
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
             if (xmlhttp.status == 200) {
 				Respuesta(xmlhttp.responseText)
@@ -60,10 +60,8 @@ function EnviarGet(servidor, Respuesta) {
             }
         }
     }
-	
-	var usuario = {nombre: Control("usuario").value, pass: Control("contraseña").value};
-	//xmlhttp.setRequestHeader("contant-Disposition", 'attachment; filename="' +  nombreArchivo + '"');
-    xmlhttp.send(usuario);
+	xmlhttp.setRequestHeader('enctype', 'multipart/form-data');
+	xmlhttp.send(datos);
 }
 
 function Respuesta(mensaje){
