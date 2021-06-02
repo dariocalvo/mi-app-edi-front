@@ -38,7 +38,7 @@
 	}
 
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-			var servidor = "https://app-calvo-back.herokuapp.com/";
+			var servidor = "https://app-calvo-back.herokuapp.com/Login.php";
 			EnviarPost(servidor, Respuesta);	
 	}
 

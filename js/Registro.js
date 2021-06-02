@@ -107,7 +107,7 @@
 
     
 	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-		var servidor = "https://app-calvo-back.herokuapp.com/";	
+		var servidor = "https://app-calvo-back.herokuapp.com/Registro.php";	
 		EnviarAlServidor(servidor, RespuestaRecibida);
 	}
 
@@ -119,7 +119,7 @@
 		datos.append("usuario", Control("usuario").value);
 		datos.append("contraseña", Control("contraseña").value);
 		datos.append("avatar", Control("avatar").files[0]);
-
+			
 		xmlhttp.open("POST", servidor, true);
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
