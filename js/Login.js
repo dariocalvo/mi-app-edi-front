@@ -38,8 +38,8 @@
 	}
 
 	function Enviar(){
-		//var servidor = "../back/Login.php";	
-		var servidor = "https://app-calvo-back.herokuapp.com/Login.php";
+		var servidor = "../back/Login.php";	
+		//var servidor = "https://app-calvo-back.herokuapp.com/Login.php";
 		var datos= new FormData();
 		datos.append("usuario", Control("usuario").value);
 		datos.append("contraseña", Control("contraseña").value);

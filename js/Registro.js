@@ -131,8 +131,8 @@
 	}
 
 	function Enviar(){
-		//var servidor = "../back/Registro.php";	
-		var servidor = "https://app-calvo-back.herokuapp.com/Registro.php";
+		var servidor = "../back/Registro.php";	
+		//var servidor = "https://app-calvo-back.herokuapp.com/Registro.php";
 		var datos= new FormData();
 		datos.append("nombre", Control("nombre").value);
 		datos.append("email", Control("email").value);
@@ -144,8 +144,8 @@
 	}
 
 	function buscarUsuario(){
-		//var servidor = "../back/funciones/buscarusuario.php";	
-		var servidor = "https://app-calvo-back.herokuapp.com/funciones/buscarusuario.php";
+		var servidor = "../back/funciones/buscarusuario.php";	
+		//var servidor = "https://app-calvo-back.herokuapp.com/funciones/buscarusuario.php";
 		var datos= new FormData();
 		datos.append("usuario", Control("usuario").value);
 		var xmlhttp = new XMLHttpRequest();
