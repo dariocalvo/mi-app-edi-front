@@ -37,33 +37,24 @@
 		}	
 	}
 
-	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-			var servidor = "https://app-calvo-back.herokuapp.com/Login.php";
-			EnviarPost(servidor, Respuesta);	
+	function Enviar(){
+		//var servidor = "../back/Login.php";	
+		var servidor = "https://app-calvo-back.herokuapp.com/Login.php";
+		var datos= new FormData();
+		datos.append("usuario", Control("usuario").value);
+		datos.append("contraseña", Control("contraseña").value);
+		EnviarPost(servidor, datos,  Respuesta);	
 	}
 
-function EnviarPost(servidor, Respuesta) {
-    var xmlhttp = new XMLHttpRequest();
-	var datos= new FormData();
-	datos.append("usuario", Control("usuario").value);
-	datos.append("contraseña", Control("contraseña").value);
-
-	xmlhttp.open("POST", servidor, true);
-	xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-            if (xmlhttp.status == 200) {
-				Respuesta(xmlhttp.responseText)
-				Control('spinner').style.display= "none";
-            }
-            else {
-                alert("ocurrio un error");
-            }
-        }
-    }
-	xmlhttp.setRequestHeader('enctype', 'multipart/form-data');
-	xmlhttp.send(datos);
-}
-
-function Respuesta(mensaje){
-	alert ("El servidor responde: " + mensaje);
-}
+	function Respuesta(mensaje){
+		if (mensaje =='true'){
+			sessionStorage.setItem('usuario', Control('usuario').value);
+			sessionStorage.setItem('imagen', Control('usuario').value+'.jpg');
+			window.location = 'Bienvenida.html';
+		
+		}else{
+			alert('Usuario o contraseña incorrectos.');
+			Control('usuario').focus();
+			Control('enviar').style.display= "inline-grid";
+		}
+	}

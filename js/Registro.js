@@ -1,4 +1,4 @@
-		
+	var usuarioDisponible= true;	
 	function Alcargar(){//Hacer foco al cagar la pagina en el primer campo a rellenar
 		Control('spinner').style.display= "none";
 		Control('nombre').focus();
@@ -11,7 +11,9 @@
 		Control('enviar').addEventListener('click', verificar);
 		Control('nombre').addEventListener('focus', function(event){event.target.value = "";});	  
 		Control('usuario').addEventListener('focus', function(event){event.target.value = "";});	  
+		Control('usuario').addEventListener('change', buscarUsuario);	  
 		Control('email').addEventListener('focus', function(event){event.target.value = "";});
+		Control('email').addEventListener('change', comprobarmail);
 		Control('contraseña').addEventListener('focus', function(event){
 			event.target.value = "";
 			Control('msjpas').style.color = "#495E67";
@@ -43,7 +45,7 @@
 					case "email":
 						var regla = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 						var msjError = 'el formato no corresponde a una dirección de correo electrónico.';
-						break;
+					break;
 					case "avatar":
 						var regla = /^.*$/;	
 						break;
@@ -62,6 +64,14 @@
 				}
 				if (elemento == 'enviar') {i=-1;}
 			}
+		if (!usuarioDisponible){
+			alert ('Debes seleccionar otro nombre de usuario.' );
+			Control('usuario').focus();
+			Control('msjus').innerHTML="<br>";
+			usuarioDisponible=true;
+			error = true;
+		}	
+
 		if (!error){
 			Control('spinner').style.display= "inline-grid";
 			Control('enviar').style.display= "none";
@@ -84,7 +94,23 @@
 			}	
 		}
 	}
-    
+
+	function comprobarmail(){
+		var expreg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+		var pass = Control('email').value;
+		if (ValidarExpreg(pass, expreg)){
+			Control('msjmail').style.color = "green";
+			Control('msjmail').innerHTML="La dirección de correo esta OK.";	
+		}else{
+			if (pass.length > 0){
+				Control('msjmail').style.color = "red";
+				Control('msjmail').innerHTML="El email no posee el formato correcto.";
+			}else{
+				Control('msjmail').innerHTML="<br>";
+			}	
+		}
+	}
+
     function imagenPrevia() { //Genera una imágen previa del archivo a subir       
         var reader = new FileReader();         
         reader.readAsDataURL(Control('avatar').files[0]);         
@@ -104,28 +130,38 @@
 		Control('enviar').focus();
 	}
 
-
-    
-	function Enviar(){// hace la funcion submit utilizando petición asincrónica al servidor y trae la respuesta sin salir de la pagina
-		var servidor = "https://app-calvo-back.herokuapp.com/Registro.php";	
-		EnviarAlServidor(servidor, RespuestaRecibida);
-	}
-
-	function EnviarAlServidor(servidor, Respuesta){// enviar peticion al servidor sin salir de la pagina
-		var xmlhttp = new XMLHttpRequest();
+	function Enviar(){
+		//var servidor = "../back/Registro.php";	
+		var servidor = "https://app-calvo-back.herokuapp.com/Registro.php";
 		var datos= new FormData();
 		datos.append("nombre", Control("nombre").value);
 		datos.append("email", Control("email").value);
 		datos.append("usuario", Control("usuario").value);
 		datos.append("contraseña", Control("contraseña").value);
 		datos.append("avatar", Control("avatar").files[0]);
-			
+		EnviarPost(servidor, datos,  Respuesta);
+		setTimeout(function(){window.location = 'Login.html';}, 1000);
+	}
+
+	function buscarUsuario(){
+		//var servidor = "../back/funciones/buscarusuario.php";	
+		var servidor = "https://app-calvo-back.herokuapp.com/funciones/buscarusuario.php";
+		var datos= new FormData();
+		datos.append("usuario", Control("usuario").value);
+		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("POST", servidor, true);
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE){
 				if(xmlhttp.status == 200){
-					Respuesta(xmlhttp.responseText);// me muestre la respuesta del servidor si todo fue OK
-					Control('spinner').style.display= "none";
+					if(xmlhttp.response == "false"){
+						Control('msjus').style.color = "red";
+						Control('msjus').innerHTML="Nombre de usuario no disponible.";
+						Control('usuario').focus();
+						usuarioDisponible= false;
+					}else{
+						Control('msjus').style.color = "Green";
+						Control('msjus').innerHTML="Nombre de usuario aceptado.";
+					}
 				}else{
 					alert("Ocurrió un error.");
 				}
@@ -135,6 +171,6 @@
 		xmlhttp.send(datos);
 	}
 
-	function RespuestaRecibida(mensaje){
-		alert ("El servidor responde: " + mensaje);
+	function Respuesta(mensaje){
+		alert (mensaje);
 	}
