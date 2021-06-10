@@ -1,7 +1,7 @@
 function Alcargar(){//Hacer foco al cagar la pagina en el primer campo a rellenar
 	var usuario = sessionStorage.getItem('usuario');
 	var imagen = sessionStorage.getItem('imagen');
-	var rutaimagen = "/EDI_3/back/img/usuarios/"+imagen;
+	var rutaimagen = "https://app-calvo-back.herokuapp.com/Img/usuarios/"+imagen;
 	Control('bienvenida').innerHTML="Hola "+usuario+"!";
 	ponerimagen(rutaimagen);
 }	
